@@ -1,7 +1,7 @@
 ip2map - Plots IPs on a Map
 ======
 
-* Debian, ElasticSearch, Kibana and bettermap rocks \m/ *
+" Debian, ElasticSearch, Kibana and bettermap rocks \m/ "
 
 Setup:
 sudo sh install.sh
