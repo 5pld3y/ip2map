@@ -1,8 +1,8 @@
 #!/bin/bash
 #ip2map installer - spid3y
-apt-get install python-virtualenv gunzip apache2 openjdk-7-jre
+apt-get install python-virtualenv gzip apache2 openjdk-7-jre
 
-javahome = $(find /usr/lib/jvm/*7* -name javac | sed "s:bin/javac::")
+javahome=$(find /usr/lib/jvm/*7* -name javac | sed "s:bin/javac::")
 rm -Rf /opt/ip2map
 cd /opt; mkdir ip2map; cd ip2map
 wget https://download.elasticsearch.org/elasticsearch/elasticsearch/elasticsearch-1.2.2.tar.gz
@@ -11,8 +11,8 @@ rm elasticsearch*.tar.gz
 mv elasticsearch-1.2.2 elasticsearch
 xterm -e  "JAVA_HOME=$javahome /opt/ip2map/elasticsearch/bin/elasticsearch" &
 
-virtualenv env
-source env/bin/activate
+virtualenv /opt/ip2map/env
+source /opt/ip2map/env/bin/activate
 pip install maxminddb
 pip install pycurl      
 mkdir geo; cd geo
