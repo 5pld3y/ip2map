@@ -7,7 +7,7 @@ Setup:
   sudo sh install.sh
 
 Usage:
-  sudo ip2map <csv file path>
+  sudo ip2map < csv-file-path >
 
 Instructions:
 
