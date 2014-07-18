@@ -1,10 +1,13 @@
 #!/bin/bash
 #ip2map installer - spid3y
-apt-get install python-virtualenv gzip apache2 openjdk-7-jre
+user=$(whoami)
+sudo apt-get install python-virtualenv gzip openjdk-7-jre
+sudo rm -Rf /opt/ip2map
+cd /opt; sudo mkdir ip2map; sudo chown $user:$user ip2map; sudo chmod 755 ip2map;cd ip2map
 
 javahome=$(find /usr/lib/jvm/*7* -name javac | sed "s:bin/javac::")
-rm -Rf /opt/ip2map
-cd /opt; mkdir ip2map; cd ip2map
+
+
 wget https://download.elasticsearch.org/elasticsearch/elasticsearch/elasticsearch-1.2.2.tar.gz
 tar -xvf elasticsearch*.tar.gz
 rm elasticsearch*.tar.gz
@@ -22,7 +25,7 @@ cd ..
 wget https://download.elasticsearch.org/kibana/kibana/kibana-3.1.0.tar.gz
 tar -xvf kibana*.tar.gz
 rm kibana*.tar.gz
-mv kibana* /var/www/kibana/
+mv kibana* kibana
 cat > ip2map.py <<EOF
 #!/usr/bin/env /opt/ip2map/env/bin/python
 #ip2map by spid3y
@@ -50,6 +53,7 @@ if not len( sys.argv ) == 2:
 esStatus = popen('netstat -an | grep 9200 | grep LIST | wc -l')
 
 if '0' in esStatus.read():
+        print "ElasticSearch is closed. Starting it.."
         javahome = popen('find /usr/lib/jvm/*7* -name javac | sed "s:bin/javac::"')
         javahome = javahome.read().replace("\n", "")
         popen('xterm -e  "JAVA_HOME=%s /opt/ip2map/elasticsearch/bin/elasticsearch" &' % javahome)
@@ -59,8 +63,8 @@ buf = cStringIO.StringIO()
 
 
 indexName = raw_input("Index type name (your map data will be indexed by this type under 'ip2map' index in ElasticSearch\n: ").replace(" ", "")
-pageName = raw_input("Page Title: ")
-mapName = raw_input("Map Title: ")
+pageName = raw_input("Page Title\n: ")
+mapName = raw_input("Map Title\n: ")
 toolTip =  raw_input("Tooltip column name (The Column from the CSV file, which is displayed upon marker's hover)\n: ")
 if indexName == "":
         print "Invalid input"
@@ -345,12 +349,13 @@ for line in ipFile.readlines():
         except:
                 pass
                 
-kibana = open( "/var/www/kibana/app/dashboards/%s.json" % (indexName), "w")
+kibana = open( "/opt/ip2map/kibana/app/dashboards/%s.json" % (indexName), "w")
 kibana.write(jsonOut)
 kibana.close()
 ipFile.close()
-print "\nOpen the followin URL to access your Map: "
-print "\thttp://localhost/kibana/#/dashboard/file/%s.json\n" % indexName
+urlToMap = "file:///opt/ip2map/kibana/index.html#/dashboard/file/%s.json\n" % indexName
+print "\nOpen the followin URL to access your Map: %s" % urlToMap
 EOF
 chmod a+x ip2map.py
-ln -sf /opt/ip2map/ip2map.py /usr/bin/ip2map
+python -c 'f = "/opt/ip2map/kibana/config.js";c = open(f, "r").read().replace("\"+window.location.hostname+\"", "127.0.0.1");fo = open(f, "w");fo.write(c);fo.close()'
+sudo ln -sf /opt/ip2map/ip2map.py /usr/bin/ip2map
