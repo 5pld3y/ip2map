@@ -7,11 +7,11 @@ Setup:
 
 chmod a+x install.sh
 
-sudo ./install.sh
+./install.sh
 
 Usage:
 
-sudo ip2map < csv-file-path >
+ip2map < csv-file-path >
 
 Instructions:
 
