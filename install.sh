@@ -1,7 +1,7 @@
 #!/bin/bash
 #ip2map installer - spid3y
 user=$(whoami)
-sudo apt-get install xterm python-setuptools gzip openjdk-7-jre curl libcurl4-openssl-dev
+sudo apt-get install build-essential xterm python-setuptools python-dev gzip openjdk-7-jre curl libcurl4-openssl-dev
 sudo easy_install pip
 sudo easy_install virtualenv
 sudo rm -Rf /opt/ip2map
