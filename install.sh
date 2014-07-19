@@ -1,7 +1,7 @@
 #!/bin/bash
 #ip2map installer - spid3y
 user=$(whoami)
-sudo apt-get install python-virtualenv gzip openjdk-7-jre
+sudo apt-get install xterm python-virtualenv gzip openjdk-7-jre curl libcurl4-openssl-dev
 sudo rm -Rf /opt/ip2map
 cd /opt; sudo mkdir ip2map; sudo chown $user:$user ip2map; sudo chmod 755 ip2map;cd ip2map
 
@@ -358,4 +358,4 @@ print "\nOpen the followin URL to access your Map: %s" % urlToMap
 EOF
 chmod a+x ip2map.py
 python -c 'f = "/opt/ip2map/kibana/config.js";c = open(f, "r").read().replace("\"+window.location.hostname+\"", "127.0.0.1");fo = open(f, "w");fo.write(c);fo.close()'
-sudo ln -sf /opt/ip2map/ip2map.py /usr/bin/ip2map
+sudo ln -sf /opt/ip2map/ip2map.py /usr/bin/ip2map 
